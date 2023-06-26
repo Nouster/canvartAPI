@@ -27,6 +27,7 @@ class AppFixtures extends Fixture
             
             $category = new CategoryNFT();
             $category->setName($faker->word());
+            $category->setDescription($faker->paragraph());
             $manager->persist($category);
             $categories[] = $category;   
         }
@@ -58,8 +59,8 @@ class AppFixtures extends Fixture
             ->setRoles(["ROLE_ADMIN"])
             ->setPassword('test')
             ->setAddress($faker->randomElement($addresses))
-            ->setFirstname('test')
-            ->setLastname('test')
+            ->setFirstname('Taty')
+            ->setLastname('Jozy')
             ->setGender("female")
             ->setBirthdate(new DateTime(1970 - 01 - 01));
         $manager->persist($userAdmin);
@@ -69,8 +70,8 @@ class AppFixtures extends Fixture
         $userRegular->setEmail('testRegularUser@gmail.com')
             ->setPassword('test')
             ->setAddress($faker->randomElement($addresses))
-            ->setFirstname('testRegularUser')
-            ->setLastname('testRegularUser')
+            ->setFirstname('Mohamed')
+            ->setLastname('Djebali')
             ->setGender("male")
             ->setBirthdate(new DateTime(1990 - 20 - 10));
         $manager->persist($userRegular);
