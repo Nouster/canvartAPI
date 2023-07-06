@@ -10,6 +10,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -18,46 +19,48 @@ class AppFixtures extends Fixture
     const NBADDRESS = 3;
     const NBNFT = 10;
 
+    public function __construct(private UserPasswordHasherInterface $hasher)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = \Faker\Factory::create();
 
         $categories = [];
-        for ($i=0; $i < self::NBCATEGORY; $i++) {
-            
+        for ($i = 0; $i < self::NBCATEGORY; $i++) {
+
             $category = new CategoryNFT();
             $category->setName($faker->word());
             $category->setDescription($faker->paragraph());
             $manager->persist($category);
-            $categories[] = $category;   
+            $categories[] = $category;
         }
 
 
         $collections = [];
-        for ($i = 0; $i < self::NBCOLLECTION; $i++) 
-        {
+        for ($i = 0; $i < self::NBCOLLECTION; $i++) {
             $collection = new CollectionNFT();
             $collection->setName($faker->word());
             $manager->persist($collection);
             $collections[] = $collection;
-}
+        }
 
-        $adresses = [];
+        $addresses = [];
         for ($i = 0; $i < self::NBADDRESS; $i++) {
             $address = new Address();
             $address->setStreet($faker->sentence())
-                    ->setZipCode($faker->randomNumber(4))
-                    ->setCity($faker->word())
-                    ->setCountry(($faker->word()));
+                ->setZipCode($faker->randomNumber(4))
+                ->setCity($faker->word())
+                ->setCountry(($faker->word()));
             $manager->persist($address);
             $addresses[] = $address;
-
         }
 
         $userAdmin = new User();
         $userAdmin->setEmail('test@gmail.com')
             ->setRoles(["ROLE_ADMIN"])
-            ->setPassword('test')
+            ->setPassword($this->hasher->hashPassword($userAdmin, 'test'))
             ->setAddress($faker->randomElement($addresses))
             ->setFirstname('Taty')
             ->setLastname('Jozy')
@@ -68,7 +71,7 @@ class AppFixtures extends Fixture
 
         $userRegular = new User();
         $userRegular->setEmail('testRegularUser@gmail.com')
-            ->setPassword('test')
+            ->setPassword($this->hasher->hashPassword($userRegular, 'test'))
             ->setAddress($faker->randomElement($addresses))
             ->setFirstname('Mohamed')
             ->setLastname('Djebali')
@@ -78,7 +81,7 @@ class AppFixtures extends Fixture
         $users[] = $userRegular;
 
         $nfts = [];
-        for ($i=0; $i <self::NBNFT ; $i++) { 
+        for ($i = 0; $i < self::NBNFT; $i++) {
             $nft = new NFT();
             $nft->setName($faker->word())
                 ->setImg($faker->url())
@@ -88,8 +91,8 @@ class AppFixtures extends Fixture
                 ->setLaunchPriceEuro($faker->randomFloat())
                 ->setCollectionNFT($faker->randomElement($collections));
 
-                $manager->persist($nft);
-                $nfts[] = $nft;
+            $manager->persist($nft);
+            $nfts[] = $nft;
         }
 
         $manager->flush();
