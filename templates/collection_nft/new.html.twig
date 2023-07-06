@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CollectionNFT{% endblock %}
+
+{% block body %}
+    <h1>Create new CollectionNFT</h1>
+
+    {{ include('collection_nft/_form.html.twig') }}
+
+    <a href="{{ path('app_collection_n_f_t_index') }}">back to list</a>
+{% endblock %}

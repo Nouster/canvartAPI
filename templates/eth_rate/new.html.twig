@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EthRate{% endblock %}
+
+{% block body %}
+    <h1>Create new EthRate</h1>
+
+    {{ include('eth_rate/_form.html.twig') }}
+
+    <a href="{{ path('app_eth_rate_index') }}">back to list</a>
+{% endblock %}

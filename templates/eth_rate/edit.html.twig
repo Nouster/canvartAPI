@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EthRate{% endblock %}
+
+{% block body %}
+    <h1>Edit EthRate</h1>
+
+    {{ include('eth_rate/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_eth_rate_index') }}">back to list</a>
+
+    {{ include('eth_rate/_delete_form.html.twig') }}
+{% endblock %}

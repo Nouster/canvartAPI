@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EthRate index{% endblock %}
+
+{% block body %}
+    <h1>EthRate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>RateDate</th>
+                <th>Value</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for eth_rate in eth_rates %}
+            <tr>
+                <td>{{ eth_rate.id }}</td>
+                <td>{{ eth_rate.rateDate ? eth_rate.rateDate|date('Y-m-d') : '' }}</td>
+                <td>{{ eth_rate.value }}</td>
+                <td>
+                    <a href="{{ path('app_eth_rate_show', {'id': eth_rate.id}) }}">show</a>
+                    <a href="{{ path('app_eth_rate_edit', {'id': eth_rate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_eth_rate_new') }}">Create new</a>
+{% endblock %}
