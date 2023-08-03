@@ -14,8 +14,7 @@ class CategoryNFTType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('NFT')
-        ;
+            ->add('NFT', NFTType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

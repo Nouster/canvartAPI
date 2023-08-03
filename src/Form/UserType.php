@@ -13,15 +13,13 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
             ->add('password')
             ->add('firstName')
             ->add('lastName')
             ->add('gender')
             ->add('birthDate')
-            ->add('Address')
-            ->add('nFT')
-        ;
+            ->add('Address', AddressType::class)
+            ->add('nFT', NFTType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

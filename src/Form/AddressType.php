@@ -15,9 +15,7 @@ class AddressType extends AbstractType
             ->add('street')
             ->add('zipCode')
             ->add('city')
-            ->add('country')
-            ->add('user')
-        ;
+            ->add('country');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
