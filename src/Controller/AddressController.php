@@ -13,6 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/address')]
 class AddressController extends AbstractController
 {
+    public function __construct()
+    {
+    }
+
+
     #[Route('/', name: 'app_address_index', methods: ['GET'])]
     public function index(AddressRepository $addressRepository): Response
     {
@@ -69,7 +74,7 @@ class AddressController extends AbstractController
     #[Route('/{id}', name: 'app_address_delete', methods: ['POST'])]
     public function delete(Request $request, Address $address, AddressRepository $addressRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$address->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $address->getId(), $request->request->get('_token'))) {
             $addressRepository->remove($address, true);
         }
 
