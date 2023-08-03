@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\NFTRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
 #[ApiResource()]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
+
 class NFT
 {
     #[ORM\Id]
