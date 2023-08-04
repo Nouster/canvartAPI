@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
 #[ApiResource()]
-#[ApiFilter(SearchFilterr::class, properties: ['name' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 
 class NFT
 {
