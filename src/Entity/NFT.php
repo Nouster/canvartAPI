@@ -50,6 +50,9 @@ class NFT
     #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
     private Collection $User;
 
+    #[ORM\Column(length: 255)]
+    private ?string $creator = null;
+
     public function __construct()
     {
         $this->categoryNFTs = new ArrayCollection();
@@ -198,6 +201,18 @@ class NFT
                 $user->setNFT(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreator(): ?string
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(string $creator): static
+    {
+        $this->creator = $creator;
 
         return $this;
     }

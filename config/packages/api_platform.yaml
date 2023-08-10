@@ -6,3 +6,7 @@ api_platform:
     json: ["application/merge-patch+json"]
   swagger:
     versions: [3]
+    api_keys:
+      JWT:
+        name: "Authorization" # Utiliser une chaîne au lieu d'une liste
+        type: header

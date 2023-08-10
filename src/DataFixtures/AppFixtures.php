@@ -89,6 +89,7 @@ class AppFixtures extends Fixture
                 ->setLaunchDate((new DateTime()))
                 ->setLaunchPriceEth($faker->randomFloat())
                 ->setLaunchPriceEuro($faker->randomFloat())
+                ->setCreator($faker->name())
                 ->setCollectionNFT($faker->randomElement($collections))
                 ->addCategoryNFT($faker->randomElement($categories));
 
