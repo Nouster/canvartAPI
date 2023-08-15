@@ -10,9 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'nft:read'],
+    denormalizationContext: ['groups' => ['nft:create']]
+)]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 
 class NFT
@@ -20,34 +24,44 @@ class NFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['nft:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?string $img = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['nft:read'])]
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?float $launchPriceEuro = null;
 
     #[ORM\ManyToOne(inversedBy: 'NFT')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['nft:read', 'nft:create'])]
     private ?CollectionNFT $collectionNFT = null;
 
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
+    #[Groups(['nft:read', 'nft:create'])]
     private Collection $categoryNFTs;
 
     #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
+    #[Groups('nft:read')]
     private Collection $User;
 
     #[ORM\Column(length: 255)]

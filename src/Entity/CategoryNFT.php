@@ -7,9 +7,13 @@ use App\Repository\CategoryNFTRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryNFTRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'category:read'],
+    denormalizationContext: ['groups' => ['category:create']]
+)]
 class CategoryNFT
 {
     #[ORM\Id]
@@ -18,9 +22,11 @@ class CategoryNFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['category:read', 'category:create'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['category:read', 'category:create'])]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: NFT::class, inversedBy: 'categoryNFTs')]

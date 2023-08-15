@@ -7,9 +7,13 @@ use App\Repository\CollectionNFTRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CollectionNFTRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'collection:read'],
+    denormalizationContext: ['groups' => ['collection:create']]
+)]
 
 class CollectionNFT
 {
@@ -19,6 +23,7 @@ class CollectionNFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['collection:read', 'collection:create'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collectionNFT', targetEntity: NFT::class)]
