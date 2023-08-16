@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -47,9 +48,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $Address = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?NFT $nFT = null;
+    // #[ORM\ManyToOne(inversedBy: 'User')]
+    // #[ORM\JoinColumn(nullable: false)]
+    // private ?NFT $nFT = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]
+    private Collection $nFT;
 
     public function getId(): ?int
     {
@@ -200,14 +204,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNFT(): ?NFT
+    // public function getNFT(): ?NFT
+    // {
+    //     return $this->nFT;
+    // }
+
+    // public function setNFT(?NFT $nFT): static
+    // {
+    //     $this->nFT = $nFT;
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection<int, NFT>
+     */
+    public function getNft(): Collection
     {
         return $this->nFT;
     }
 
-    public function setNFT(?NFT $nFT): static
+    public function addNft(NFT $nft): static
     {
-        $this->nFT = $nFT;
+        if (!$this->nFT->contains($nft)) {
+            $this->nFT->add($nft);
+            $nft->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNft(NFT $nft): static
+    {
+        if ($this->nFT->removeElement($nft)) {
+            // set the owning side to null (unless already changed)
+            if ($nft->getUser() === $this) {
+                $nft->setUser(null);
+            }
+        }
 
         return $this;
     }

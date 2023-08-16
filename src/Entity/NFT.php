@@ -60,9 +60,12 @@ class NFT
     #[Groups(['nft:read', 'nft:create'])]
     private Collection $categoryNFTs;
 
-    #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
-    #[Groups('nft:read')]
-    private Collection $User;
+    // #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
+    // #[Groups('nft:read')]
+    // private Collection $User;
+
+    #[ORM\ManyToOne(inversedBy: 'nft')]
+    private ?User $User = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['nft:read'])]
@@ -193,32 +196,19 @@ class NFT
     /**
      * @return Collection<int, User>
      */
-    public function getUser(): Collection
+    public function getUser(): ?User
     {
         return $this->User;
     }
 
-    public function addUser(User $user): static
+    public function setUser(?User $user): static
     {
-        if (!$this->User->contains($user)) {
-            $this->User->add($user);
-            $user->setNFT($this);
-        }
+        $this->User = $user;
 
         return $this;
     }
 
-    public function removeUser(User $user): static
-    {
-        if ($this->User->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getNFT() === $this) {
-                $user->setNFT(null);
-            }
-        }
 
-        return $this;
-    }
 
     public function getCreator(): ?string
     {
