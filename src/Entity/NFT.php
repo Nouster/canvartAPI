@@ -35,7 +35,7 @@ class NFT
     #[Groups(['nft:read', 'nft:create'])]
     private ?string $img = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups(['nft:read', 'nft:create'])]
     private ?string $description = null;
 
@@ -65,6 +65,7 @@ class NFT
     private Collection $User;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read'])]
     private ?string $creator = null;
 
     public function __construct()
