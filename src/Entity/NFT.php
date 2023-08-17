@@ -14,8 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'nft:read'],
-    denormalizationContext: ['groups' => ['nft:create']]
+    normalizationContext: ['groups' => 'nft:read', 'user:read', 'category:read'],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial'])]
 
@@ -28,15 +27,15 @@ class NFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read', 'category:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private ?string $img = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -44,27 +43,28 @@ class NFT
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private ?float $launchPriceEuro = null;
 
     #[ORM\ManyToOne(inversedBy: 'NFT')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private ?CollectionNFT $collectionNFT = null;
 
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
-    #[Groups(['nft:read', 'nft:create'])]
+    #[Groups(['nft:read'])]
     private Collection $categoryNFTs;
 
     // #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
     // #[Groups('nft:read')]
     // private Collection $User;
 
-    #[ORM\ManyToOne(inversedBy: 'nft')]
+    #[ORM\ManyToOne(inversedBy: 'nFT')]
+    #[Groups(['nft:read'])]
     private ?User $User = null;
 
     #[ORM\Column(length: 255)]
@@ -74,7 +74,6 @@ class NFT
     public function __construct()
     {
         $this->categoryNFTs = new ArrayCollection();
-        $this->User = new ArrayCollection();
     }
 
     public function getId(): ?int
