@@ -47,16 +47,19 @@ class NFT
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
     private Collection $categoryNFTs;
 
-    #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
-    private Collection $User;
+    // #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
+    // private Collection $User;
 
     #[ORM\Column(length: 255)]
     private ?string $creator = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nFTs')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->categoryNFTs = new ArrayCollection();
-        $this->User = new ArrayCollection();
+        // $this->User = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,35 +178,35 @@ class NFT
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
-    {
-        return $this->User;
-    }
+    // /**
+    //  * @return Collection<int, User>
+    //  */
+    // public function getUser(): Collection
+    // {
+    //     return $this->User;
+    // }
 
-    public function addUser(User $user): static
-    {
-        if (!$this->User->contains($user)) {
-            $this->User->add($user);
-            $user->setNFT($this);
-        }
+    // public function addUser(User $user): static
+    // {
+    //     if (!$this->User->contains($user)) {
+    //         $this->User->add($user);
+    //         $user->setNFT($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeUser(User $user): static
-    {
-        if ($this->User->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getNFT() === $this) {
-                $user->setNFT(null);
-            }
-        }
+    // public function removeUser(User $user): static
+    // {
+    //     if ($this->User->removeElement($user)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($user->getNFT() === $this) {
+    //             $user->setNFT(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCreator(): ?string
     {
@@ -213,6 +216,18 @@ class NFT
     public function setCreator(string $creator): static
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

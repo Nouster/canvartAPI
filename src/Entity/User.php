@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -47,9 +49,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $Address = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?NFT $nFT = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]
+    private Collection $nFTs;
+
+    public function __construct()
+    {
+        $this->nFTs = new ArrayCollection();
+    }
+
+    // #[ORM\ManyToOne(inversedBy: 'User')]
+    // #[ORM\JoinColumn(nullable: false)]
+    // private ?NFT $nFT = null;
 
     public function getId(): ?int
     {
@@ -200,14 +210,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNFT(): ?NFT
+    // public function getNFT(): ?NFT
+    // {
+    //     return $this->nFT;
+    // }
+
+    // public function setNFT(?NFT $nFT): static
+    // {
+    //     $this->nFT = $nFT;
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection<int, NFT>
+     */
+    public function getNFTs(): Collection
     {
-        return $this->nFT;
+        return $this->nFTs;
     }
 
-    public function setNFT(?NFT $nFT): static
+    public function addNFT(NFT $nFT): static
     {
-        $this->nFT = $nFT;
+        if (!$this->nFTs->contains($nFT)) {
+            $this->nFTs->add($nFT);
+            $nFT->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNFT(NFT $nFT): static
+    {
+        if ($this->nFTs->removeElement($nFT)) {
+            // set the owning side to null (unless already changed)
+            if ($nFT->getUser() === $this) {
+                $nFT->setUser(null);
+            }
+        }
 
         return $this;
     }
