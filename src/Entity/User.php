@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['user:read', 'nft:read']]
+    normalizationContext: ['groups' => ['user:read']]
 )]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface

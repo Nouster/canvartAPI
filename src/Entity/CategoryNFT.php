@@ -10,21 +10,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryNFTRepository::class)]
-#[ApiResource()]
-class CategoryNFT
+#[ApiResource(
+    normalizationContext: ['groups' => 'category:read', 'nft:read'],
+)] class CategoryNFT
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['nft:read', 'category:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read', 'category:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:read', 'category:read'])]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: NFT::class, inversedBy: 'categoryNFTs')]
+    #[Groups(['category:read'])]
     private Collection $NFT;
 
     public function __construct()
