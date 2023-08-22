@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CollectionNFTRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => 'collection:read'],
-    denormalizationContext: ['groups' => ['collection:create']]
 )]
 
 class CollectionNFT
@@ -23,10 +22,11 @@ class CollectionNFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['collection:read', 'collection:create'])]
+    #[Groups(['collection:read', 'nft:read'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collectionNFT', targetEntity: NFT::class)]
+    #[Groups(['nft:read'])]
     private Collection $NFT;
 
     public function __construct()

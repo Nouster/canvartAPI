@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['user:read']]
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']]
 )]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -25,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -35,34 +36,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['user:write'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('user:read', 'nft:read')]
+    #[Groups(['user:read', 'nft:read', 'user:write'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $gender = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['user:read', 'nft:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:read', 'nft:read'])]
-    private ?Address $Address = null;
+    #[Groups(['user:read', 'user:write'])]
+    private ?Address $address = null;
 
     // #[ORM\ManyToOne(inversedBy: 'User')]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?NFT $nFT = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: NFT::class)]
+    #[Groups(['user:read'])]
     private Collection $nFT;
 
     public function getId(): ?int
@@ -204,12 +207,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getAddress(): ?Address
     {
-        return $this->Address;
+        return $this->address;
     }
 
-    public function setAddress(Address $Address): static
+    public function setAddress(Address $address): static
     {
-        $this->Address = $Address;
+        $this->address = $address;
 
         return $this;
     }

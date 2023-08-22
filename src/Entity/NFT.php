@@ -65,11 +65,15 @@ class NFT
 
     #[ORM\ManyToOne(inversedBy: 'nFT')]
     #[Groups(['nft:read'])]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['nft:read'])]
     private ?string $creator = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['nft:read'])]
+    private ?int $trending = null;
 
     public function __construct()
     {
@@ -197,12 +201,12 @@ class NFT
      */
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $user): static
     {
-        $this->User = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -217,6 +221,18 @@ class NFT
     public function setCreator(string $creator): static
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getTrending(): ?int
+    {
+        return $this->trending;
+    }
+
+    public function setTrending(?int $trending): static
+    {
+        $this->trending = $trending;
 
         return $this;
     }

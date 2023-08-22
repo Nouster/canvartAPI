@@ -8,31 +8,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['address:read', 'user:read']])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['address:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+)]
 class Address
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['address:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('user:read')]
+    #[Groups(['address:read', 'user:read', 'user:write'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('user:read')]
+    #[Groups(['address:read', 'user:read', 'user:write'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('user:read')]
+    #[Groups(['address:read', 'user:read', 'user:write'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('user:read')]
+    #[Groups(['address:read', 'user:read', 'user:write'])]
     private ?string $country = null;
 
-    #[ORM\OneToOne(mappedBy: 'Address', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'Address')]
     private ?User $user = null;
 
     public function getId(): ?int
