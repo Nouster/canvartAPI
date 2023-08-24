@@ -27,15 +27,15 @@ class NFT
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['category:read', 'nft:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['category:read', 'nft:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?string $img = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['nft:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
