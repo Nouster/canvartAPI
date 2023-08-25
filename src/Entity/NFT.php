@@ -43,11 +43,11 @@ class NFT
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private ?float $launchPriceEuro = null;
 
     #[ORM\ManyToOne(inversedBy: 'NFT')]
@@ -56,7 +56,7 @@ class NFT
     private ?CollectionNFT $collectionNFT = null;
 
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'user:read'])]
     private Collection $categoryNFTs;
 
     // #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
