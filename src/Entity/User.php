@@ -73,6 +73,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $picture = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?string $description = null;
 
     public function getId(): ?int
