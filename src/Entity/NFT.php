@@ -59,10 +59,6 @@ class NFT
     #[Groups(['nft:read', 'user:read'])]
     private Collection $categoryNFTs;
 
-    // #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: User::class)]
-    // #[Groups('nft:read')]
-    // private Collection $User;
-
     #[ORM\ManyToOne(inversedBy: 'nFT')]
     #[Groups(['nft:read'])]
     private ?User $user = null;
