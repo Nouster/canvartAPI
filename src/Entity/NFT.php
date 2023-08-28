@@ -23,7 +23,7 @@ class NFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:read', 'nft:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
