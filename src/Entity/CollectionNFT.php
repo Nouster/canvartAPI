@@ -19,10 +19,11 @@ class CollectionNFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['collection:read', 'nft:read', 'nft:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['collection:read', 'nft:read'])]
+    #[Groups(['collection:read', 'nft:read', 'nft:write'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collectionNFT', targetEntity: NFT::class)]

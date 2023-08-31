@@ -32,7 +32,7 @@ class NFT
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['category:read', 'nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write'])]
     private ?string $img = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -40,20 +40,20 @@ class NFT
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'nft:write'])]
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write'])]
     private ?float $launchPriceEuro = null;
 
     #[ORM\ManyToOne(inversedBy: 'NFT')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'nft:write'])]
     private ?CollectionNFT $collectionNFT = null;
 
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
@@ -61,15 +61,15 @@ class NFT
     private Collection $categoryNFTs;
 
     #[ORM\ManyToOne(inversedBy: 'nFT')]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'nft:write'])]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'nft:write'])]
     private ?string $creator = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'nft:write'])]
     private ?int $trending = null;
 
     public function __construct()
