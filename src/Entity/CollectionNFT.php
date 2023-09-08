@@ -27,7 +27,7 @@ class CollectionNFT
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'collectionNFT', targetEntity: NFT::class)]
-    #[Groups(['nft:read'])]
+    #[Groups(['nft:read', 'collection:read'])]
     private Collection $NFT;
 
     public function __construct()

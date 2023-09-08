@@ -24,31 +24,31 @@ class NFT
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:read', 'nft:read', 'user:read'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'collection:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write', 'collection:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write', 'collection:read'])]
     private ?string $img = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write'])]
+    #[Groups(['category:read', 'nft:read', 'user:read', 'nft:write', 'collection:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['nft:read', 'nft:write'])]
+    #[Groups(['nft:read', 'nft:write', 'collection:read'])]
     private ?\DateTimeInterface $launchDate = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'user:read', 'nft:write'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write', 'collection:read'])]
     private ?float $launchPriceEth = null;
 
     #[ORM\Column]
-    #[Groups(['nft:read', 'user:read', 'nft:write'])]
+    #[Groups(['nft:read', 'user:read', 'nft:write', 'collection:read'])]
     private ?float $launchPriceEuro = null;
 
     #[ORM\ManyToOne(inversedBy: 'NFT')]
@@ -57,19 +57,19 @@ class NFT
     private ?CollectionNFT $collectionNFT = null;
 
     #[ORM\ManyToMany(targetEntity: CategoryNFT::class, mappedBy: 'NFT')]
-    #[Groups(['nft:read', 'user:read'])]
+    #[Groups(['nft:read', 'user:read', 'collection:read'])]
     private Collection $categoryNFTs;
 
     #[ORM\ManyToOne(inversedBy: 'nFT')]
-    #[Groups(['nft:read', 'nft:write'])]
+    #[Groups(['nft:read', 'nft:write', 'collection:read'])]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['nft:read', 'nft:write'])]
+    #[Groups(['nft:read', 'nft:write', 'collection:read'])]
     private ?string $creator = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['nft:read', 'nft:write'])]
+    #[Groups(['nft:read', 'nft:write', 'collection:read'])]
     private ?int $trending = null;
 
     public function __construct()
