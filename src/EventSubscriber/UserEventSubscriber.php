@@ -1,5 +1,7 @@
 <?php
 
+
+// Intercept request before to hash password
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
